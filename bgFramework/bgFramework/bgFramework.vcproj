@@ -229,6 +229,18 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="00. ¿ò¼ÜÊÚÈ¨"
+			>
+			<File
+				RelativePath=".\bgAuthentication.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\bgAuthentication.h"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"
 			>

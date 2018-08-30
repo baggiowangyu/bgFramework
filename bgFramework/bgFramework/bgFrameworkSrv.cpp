@@ -14,6 +14,7 @@ bgFrameworkSrv::~bgFrameworkSrv()
 
 void bgFrameworkSrv::Run(DWORD argc, LPTSTR * argv)
 {
+	
 	while (true)
 	{
 		Sleep(1000);
