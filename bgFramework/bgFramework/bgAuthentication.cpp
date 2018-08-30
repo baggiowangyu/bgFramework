@@ -60,6 +60,8 @@ __int64 bgAuthentication::GetCurrentFromNTPServer()
 {
 	__int64 current_time = 0;
 
+	// 使用Poco的NtpClient来获取时间信息
+
 	return current_time;
 }
 
@@ -85,6 +87,12 @@ std::string bgAuthentication::GetAuthenticateInfo()
 	std::string ret;
 
 	// 从数据库读取数据
+	HKEY hKey = NULL;
+	DWORD dwDisposition = 0;
+	LONG lret = RegCreateKeyEx(HKEY_LOCAL_MACHINE, _T("SOFTWARE\\LRHW"), 0, NULL, 0, KEY_READ, NULL, &hKey, &dwDisposition);
+	if (lret != ERROR_SUCCESS)
+	{
+	}
 
 	return ret;
 }
