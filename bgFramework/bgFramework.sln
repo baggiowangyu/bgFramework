@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bgFramework", "bgFramework\bgFramework.vcproj", "{706EADCE-3609-40B8-8D80-599D85F90740}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E00A3784-4AAD-4E8D-8296-51CF07555D84} = {E00A3784-4AAD-4E8D-8296-51CF07555D84}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bgBase", "bgBase\bgBase.vcproj", "{E00A3784-4AAD-4E8D-8296-51CF07555D84}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{706EADCE-3609-40B8-8D80-599D85F90740}.Debug|Win32.ActiveCfg = Debug|Win32
+		{706EADCE-3609-40B8-8D80-599D85F90740}.Debug|Win32.Build.0 = Debug|Win32
+		{706EADCE-3609-40B8-8D80-599D85F90740}.Release|Win32.ActiveCfg = Release|Win32
+		{706EADCE-3609-40B8-8D80-599D85F90740}.Release|Win32.Build.0 = Release|Win32
+		{E00A3784-4AAD-4E8D-8296-51CF07555D84}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E00A3784-4AAD-4E8D-8296-51CF07555D84}.Debug|Win32.Build.0 = Debug|Win32
+		{E00A3784-4AAD-4E8D-8296-51CF07555D84}.Release|Win32.ActiveCfg = Release|Win32
+		{E00A3784-4AAD-4E8D-8296-51CF07555D84}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
