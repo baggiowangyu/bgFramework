@@ -177,6 +177,22 @@
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
 		</Filter>
+		<Filter
+			Name="00.授权管理"
+			>
+			<File
+				RelativePath=".\bgAuthentication.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\bgAuthentication.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="01.进程间通信组件"
+			>
+		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"
 			>

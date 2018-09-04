@@ -1,5 +1,6 @@
 #include "bgAuthentication.h"
 #include "bgBase.h"
+#include <Windows.h>
 
 bgAuthentication authenticater;
 
@@ -26,7 +27,7 @@ bool bgAuthentication::CheckAuthentication()
 	// 先用base64还原为“加密验证码”
 	int cipher_authen_code_len = 1024;
 	char *cipher_authen_code = new char[cipher_authen_code_len];
-	int errCode = bgBase::Base64Decode(authen_info, cipher_authen_code, cipher_authen_code_len);
+	int errCode = bgBase::Base64Decode(authen_info, (unsigned char *)cipher_authen_code, cipher_authen_code_len);
 	if (errCode == -1)
 	{
 	}
