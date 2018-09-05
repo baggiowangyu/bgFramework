@@ -41,6 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories="..\ext\Poco\include"
 				PreprocessorDefinitions="WIN32;_DEBUG;_LIB"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -175,6 +176,26 @@
 			Name="资源文件"
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
+			>
+		</Filter>
+		<Filter
+			Name="00.授权管理"
+			>
+			<File
+				RelativePath=".\bgAuthentication.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\bgAuthentication.h"
+				>
+			</File>
+			<File
+				RelativePath=".\bgDiskInfo.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="01.进程间通信组件"
 			>
 		</Filter>
 		<File

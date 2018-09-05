@@ -32,6 +32,16 @@ private:
 	
 	// 将验证过的授权信息写入本地
 	bool SetAuthenticateInfo(std::string authen_code);
+
+private:
+	std::string GetProcessorIdentifier();
+	std::string GetProcessorProcessorNameString();
+	std::string GetProcessorVendorIdentifier();
+
+	std::string GetBIOSVendor();
+	std::string GetBIOSVersion();
+
+	std::string GetDiskIdentifier();
 };
 
 // 声明一个单例对象

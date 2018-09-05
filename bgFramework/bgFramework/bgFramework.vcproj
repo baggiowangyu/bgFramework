@@ -63,7 +63,7 @@
 				Name="VCLinkerTool"
 				AdditionalDependencies="bgBase.lib"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="..\Debug"
+				AdditionalLibraryDirectories="..\Debug;..\ext\Poco\lib\x86\Debug"
 				GenerateDebugInformation="true"
 				SubSystem="1"
 				TargetMachine="1"
@@ -232,14 +232,6 @@
 		<Filter
 			Name="00. ¿ò¼ÜÊÚÈ¨"
 			>
-			<File
-				RelativePath=".\bgAuthentication.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\bgAuthentication.h"
-				>
-			</File>
 		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"
