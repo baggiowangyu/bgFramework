@@ -30,6 +30,9 @@ bool bgAuthentication::CheckAuthentication()
 	// 从数据库取出验证码
 	std::string authen_info = GetAuthenticateInfo();
 
+	// 取服务器时间
+	GetCurrentFromNTPServer();
+
 	// 先用base64还原为“加密验证码”
 	int cipher_authen_code_len = 1024;
 	char *cipher_authen_code = new char[cipher_authen_code_len];
@@ -68,6 +71,16 @@ __int64 bgAuthentication::GetCurrentFromNTPServer()
 	__int64 current_time = 0;
 
 	// 使用Poco的NtpClient来获取时间信息
+	try {
+		Poco::Net::NTPClient ntp_client(Poco::Net::AddressFamily::IPv4);
+		ntp_client.request("s2g.time.edu.cn");
+	} catch (Poco::IOException e) {
+		int errCode = e.code();
+		std::string msg = e.displayText();
+	}
+	
+
+	Sleep(1000);
 
 	return current_time;
 }
