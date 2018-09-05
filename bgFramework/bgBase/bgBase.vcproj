@@ -189,6 +189,10 @@
 				RelativePath=".\bgAuthentication.h"
 				>
 			</File>
+			<File
+				RelativePath=".\bgDiskInfo.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="01.进程间通信组件"

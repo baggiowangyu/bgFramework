@@ -97,7 +97,7 @@ std::string bgAuthentication::GetMachineCode()
 	all_info += disk_identifier;
 
 	Poco::SHA1Engine sha1_engine;
-	sha1_engine.updateImpl(all_info.data(), all_info.length());
+	sha1_engine.update(all_info);
 	Poco::DigestEngine::Digest digist = sha1_engine.digest();
 	ret = Poco::DigestEngine::digestToHex(digist);
 
@@ -145,7 +145,7 @@ bool bgAuthentication::SetAuthenticateInfo(std::string authen_code)
 	// 从数据库读取数据
 	HKEY hKey = NULL;
 	DWORD dwDisposition = 0;
-	LONG lret = RegCreateKeyExA(HKEY_LOCAL_MACHINE, _T("SOFTWARE\\LRHW"), 0, NULL, 0, KEY_READ|KEY_WRITE, NULL, &hKey, &dwDisposition);
+	LONG lret = RegCreateKeyExA(HKEY_LOCAL_MACHINE, "SOFTWARE\\LRHW", 0, NULL, 0, KEY_READ|KEY_WRITE, NULL, &hKey, &dwDisposition);
 	if (lret != ERROR_SUCCESS)
 	{
 		errCode = GetLastError();
@@ -153,9 +153,9 @@ bool bgAuthentication::SetAuthenticateInfo(std::string authen_code)
 	}
 
 	DWORD dwType = REG_SZ;
-	TCHAR tszValue[4096] = {0};
+	CHAR tszValue[4096] = {0};
 	DWORD dwValueLen = 4096;
-	lret = RegSetValueExA(hKey, "AU_CODE", NULL, &dwType, (LPBYTE)authen_code.c_str(), authen_code.size() + 1);
+	lret = RegSetValueExA(hKey, "AU_CODE", NULL, dwType, (LPBYTE)authen_code.c_str(), authen_code.size() + 1);
 	errCode = GetLastError();
 
 	RegCloseKey(hKey);
@@ -177,7 +177,7 @@ std::string bgAuthentication::GetProcessorIdentifier()
 	// 从数据库读取数据
 	HKEY hKey = NULL;
 	DWORD dwDisposition = 0;
-	LONG lret = RegCreateKeyExA(HKEY_LOCAL_MACHINE, "HARDWARE\\DESCRIPTION\\CentralProcessor\\0", 0, NULL, 0, KEY_READ, NULL, &hKey, &dwDisposition);
+	LONG lret = RegCreateKeyExA(HKEY_LOCAL_MACHINE, "HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0", 0, NULL, 0, KEY_READ, NULL, &hKey, &dwDisposition);
 	if (lret != ERROR_SUCCESS)
 	{
 		errCode = GetLastError();
@@ -210,7 +210,7 @@ std::string bgAuthentication::GetProcessorProcessorNameString()
 	// 从数据库读取数据
 	HKEY hKey = NULL;
 	DWORD dwDisposition = 0;
-	LONG lret = RegCreateKeyExA(HKEY_LOCAL_MACHINE, "HARDWARE\\DESCRIPTION\\CentralProcessor\\0", 0, NULL, 0, KEY_READ, NULL, &hKey, &dwDisposition);
+	LONG lret = RegCreateKeyExA(HKEY_LOCAL_MACHINE, "HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0", 0, NULL, 0, KEY_READ, NULL, &hKey, &dwDisposition);
 	if (lret != ERROR_SUCCESS)
 	{
 		errCode = GetLastError();
@@ -243,7 +243,7 @@ std::string bgAuthentication::GetProcessorVendorIdentifier()
 	// 从数据库读取数据
 	HKEY hKey = NULL;
 	DWORD dwDisposition = 0;
-	LONG lret = RegCreateKeyExA(HKEY_LOCAL_MACHINE, "HARDWARE\\DESCRIPTION\\CentralProcessor\\0", 0, NULL, 0, KEY_READ, NULL, &hKey, &dwDisposition);
+	LONG lret = RegCreateKeyExA(HKEY_LOCAL_MACHINE, "HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0", 0, NULL, 0, KEY_READ, NULL, &hKey, &dwDisposition);
 	if (lret != ERROR_SUCCESS)
 	{
 		errCode = GetLastError();
@@ -276,7 +276,7 @@ std::string bgAuthentication::GetBIOSVendor()
 	// 从数据库读取数据
 	HKEY hKey = NULL;
 	DWORD dwDisposition = 0;
-	LONG lret = RegCreateKeyExA(HKEY_LOCAL_MACHINE, "HARDWARE\\DESCRIPTION\\BIOS", 0, NULL, 0, KEY_READ, NULL, &hKey, &dwDisposition);
+	LONG lret = RegCreateKeyExA(HKEY_LOCAL_MACHINE, "HARDWARE\\DESCRIPTION\\System\\BIOS", 0, NULL, 0, KEY_READ, NULL, &hKey, &dwDisposition);
 	if (lret != ERROR_SUCCESS)
 	{
 		errCode = GetLastError();
@@ -309,7 +309,7 @@ std::string bgAuthentication::GetBIOSVersion()
 	// 从数据库读取数据
 	HKEY hKey = NULL;
 	DWORD dwDisposition = 0;
-	LONG lret = RegCreateKeyExA(HKEY_LOCAL_MACHINE, "HARDWARE\\DESCRIPTION\\BIOS", 0, NULL, 0, KEY_READ, NULL, &hKey, &dwDisposition);
+	LONG lret = RegCreateKeyExA(HKEY_LOCAL_MACHINE, "HARDWARE\\DESCRIPTION\\System\\BIOS", 0, NULL, 0, KEY_READ, NULL, &hKey, &dwDisposition);
 	if (lret != ERROR_SUCCESS)
 	{
 		errCode = GetLastError();
@@ -332,4 +332,111 @@ std::string bgAuthentication::GetBIOSVersion()
 
 	ret = tszValue;
 	return ret;
+}
+
+#include "bgDiskInfo.h"
+void ChangeByteOrder(PCHAR szString, USHORT uscStrSize) 
+{ 
+	CHAR temp= '\0';
+
+	for (USHORT i = 0; i < uscStrSize; i += 2) 
+	{ 
+		temp = szString[i]; 
+		szString[i] = szString[i+1]; 
+		szString[i+1] = temp; 
+	} 
+}
+
+
+std::string bgAuthentication::GetDiskIdentifier()
+{
+	char lpszHD[1024] = {0}; 
+	GETVERSIONOUTPARAMS vers; 
+	SENDCMDINPARAMS		in_; 
+	SENDCMDOUTPARAMS	out_; 
+
+	ZeroMemory(&vers, sizeof(vers)); 
+	ZeroMemory(&in_  , sizeof(in_)); 
+	ZeroMemory(&out_ , sizeof(out_)); 
+
+	//搜索四个物理硬盘，取第一个有数据的物理硬盘
+	for (int j = 0; j < 4; ++j)
+	{
+		char szhd[80] = {0};
+		sprintf(szhd, "\\\\.\\PhysicalDrive%d", j); 
+		HANDLE hDrive = CreateFileA(szhd, GENERIC_READ|GENERIC_WRITE, FILE_SHARE_READ|FILE_SHARE_WRITE, 0, OPEN_EXISTING, 0, 0); 
+		if (NULL == hDrive)
+		{ 
+			continue; 
+		} 
+
+		DWORD bytesRtn = 0;
+		if (!DeviceIoControl(hDrive, DFP_GET_VERSION, 0, 0, &vers, sizeof(vers), &bytesRtn,0))
+		{ 
+			goto FOREND;
+		} 
+
+		//If IDE identify command not supported, fails 
+		if (!(vers.fCapabilities&1))
+		{ 
+			goto FOREND;
+		} 
+
+		//Identify the IDE drives 
+		if (j&1)
+		{ 
+			in_.irDriveRegs.bDriveHeadReg = 0xb0; 
+		}
+		else
+		{ 
+			in_.irDriveRegs.bDriveHeadReg = 0xa0; 
+		} 
+
+		if (vers.fCapabilities&(16>>j))
+		{ 
+			//We don't detect a ATAPI device. 
+			goto FOREND;
+		}
+		else
+		{ 
+			in_.irDriveRegs.bCommandReg = 0xec; 
+		} 
+		in_.bDriveNumber = j; 
+		in_.irDriveRegs.bSectorCountReg  = 1; 
+		in_.irDriveRegs.bSectorNumberReg = 1; 
+		in_.cBufferSize = 512; 
+
+		
+		if (!DeviceIoControl(hDrive, DFP_RECEIVE_DRIVE_DATA, &in_, sizeof(in_), &out_, sizeof(out_), &bytesRtn,0))
+		{ 
+			//"DeviceIoControl failed:DFP_RECEIVE_DRIVE_DATA"<<endl; 
+			int errCode = GetLastError();
+			goto FOREND; 			
+		} 
+		PIDSECTOR phdinfo = (PIDSECTOR)out_.bBuffer; 
+
+		char	s[21] = {0};		
+		memcpy(s, phdinfo->sSerialNumber, 20); 		
+		s[20] = 0; 
+		ChangeByteOrder(s, 20); 
+
+		//删除空格字符
+		int ix = 0;
+		for (ix=0; ix<20; ix++)
+		{
+			if (s[ix] == ' ')
+			{
+				continue;
+			}
+			break;
+		}
+		memcpy(lpszHD, s+ix, 20);
+
+		break;
+FOREND:
+		CloseHandle(hDrive); 
+		hDrive = NULL; 
+	}
+
+	return lpszHD;
 }
