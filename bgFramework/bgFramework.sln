@@ -10,6 +10,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bgBase", "bgBase\bgBase.vcp
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bgLogging", "bgLogging\bgLogging.vcproj", "{C04D93C0-99C1-492E-B44D-B945B0ACE4CB}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bgKeepRecorder", "bgKeepRecorder\bgKeepRecorder.vcproj", "{BB6024F5-5044-48BB-BEF7-CCE699826407}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -28,6 +30,10 @@ Global
 		{C04D93C0-99C1-492E-B44D-B945B0ACE4CB}.Debug|Win32.Build.0 = Debug|Win32
 		{C04D93C0-99C1-492E-B44D-B945B0ACE4CB}.Release|Win32.ActiveCfg = Release|Win32
 		{C04D93C0-99C1-492E-B44D-B945B0ACE4CB}.Release|Win32.Build.0 = Release|Win32
+		{BB6024F5-5044-48BB-BEF7-CCE699826407}.Debug|Win32.ActiveCfg = Debug|Win32
+		{BB6024F5-5044-48BB-BEF7-CCE699826407}.Debug|Win32.Build.0 = Debug|Win32
+		{BB6024F5-5044-48BB-BEF7-CCE699826407}.Release|Win32.ActiveCfg = Release|Win32
+		{BB6024F5-5044-48BB-BEF7-CCE699826407}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

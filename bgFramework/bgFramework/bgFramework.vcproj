@@ -230,8 +230,12 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="00. ¿ò¼ÜÊÚÈ¨"
+			Name="00. ²å¼þ¿ò¼Ü"
 			>
+			<File
+				RelativePath=".\bgPluginFramework.h"
+				>
+			</File>
 		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"
