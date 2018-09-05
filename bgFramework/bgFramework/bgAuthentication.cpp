@@ -46,6 +46,11 @@ std::string bgAuthentication::GetNewAuthenRequestCode()
 {
 	std::string ret;
 
+	// 首先获取本机的机器码
+	std::string machine_code = GetMachineCode();
+
+	// 将机器码加密
+
 	return ret;
 }
 
